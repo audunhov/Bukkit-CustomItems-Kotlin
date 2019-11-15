@@ -49,8 +49,8 @@ class Main : JavaPlugin() {
                             ).create()
 
                             sender.inventory.addItem(itemStack)
-                            return true
 
+                            return true
                         }
 
                         sender.sendMessage("No item with that name")
@@ -60,13 +60,9 @@ class Main : JavaPlugin() {
                         sender.sendMessage("Found no level with that name")
                     }
 
-                    if (args[0].equals("bots", true)) {
-
-
-                        return true
-                    }
                     return false
                 }
+                sender.sendMessage("Only a player may use this command")
             }
 
         }

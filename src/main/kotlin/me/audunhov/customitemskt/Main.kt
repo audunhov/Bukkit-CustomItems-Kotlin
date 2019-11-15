@@ -7,21 +7,21 @@ import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
-import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
-import java.io.File
 
 
 class Main : JavaPlugin() {
 
-    var items: YamlConfiguration = YamlConfiguration()
 
     override fun onEnable() {
         Bukkit.getPluginManager().registerEvents(Events(), this)
-        items = YamlConfiguration.loadConfiguration(File(dataFolder, "items.yml"))
+
+        saveDefaultConfig()
+        reloadConfig()
+
     }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
@@ -33,11 +33,11 @@ class Main : JavaPlugin() {
                     try {
                         val level = ItemLevel.valueOf(args[1].toUpperCase())
 
-                        if (args[0] in items.getKeys(false)) {
-                            val mat: String = items.getString(args[0] + ".material")!!.toUpperCase()
-                            val dispname = items.getString(args[0] + ".name")!!
-                            val attr = items.getString(args[0] + ".attribute")!!.toUpperCase()
-                            val slot = items.getString(args[0] + ".slot")!!.toUpperCase()
+                        if (args[0] in getConfig().getKeys(false)) {
+                            val mat: String = getConfig().getString(args[0] + ".material")!!.toUpperCase()
+                            val dispname = getConfig().getString(args[0] + ".name")!!
+                            val attr = getConfig().getString(args[0] + ".attribute")!!.toUpperCase()
+                            val slot = getConfig().getString(args[0] + ".slot")!!.toUpperCase()
 
                             val itemStack = ItemStack(Material.valueOf(mat))
                             itemStack.itemMeta = MagicMeta(
@@ -49,8 +49,11 @@ class Main : JavaPlugin() {
                             ).create()
 
                             sender.inventory.addItem(itemStack)
+                            return true
 
                         }
+
+                        sender.sendMessage("No item with that name")
 
 
                     } catch (e: java.lang.IllegalArgumentException) {

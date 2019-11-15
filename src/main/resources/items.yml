@@ -1,0 +1,17 @@
+bots:
+  material: Leather_boots
+  name: Boots of Travel
+  attribute: generic_movement_speed
+  slot: feet
+
+hyperstone:
+  material: emerald
+  name: Hyperstone
+  attribute: generic_attack_speed
+  slot: off_hand
+
+hot:
+  material: slime_ball
+  name: Heart of Tarrasque
+  attribute: generic_max_health
+  slot: off_hand

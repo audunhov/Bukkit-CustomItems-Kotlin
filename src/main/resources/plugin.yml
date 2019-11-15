@@ -1,0 +1,8 @@
+name: Custom-Item-Test
+author: audunhov
+description: Testing Custom items in Kotlin
+main: me.audunhov.customitemskt.Main
+version: 1.0
+
+commands:
+  customitem:

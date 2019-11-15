@@ -7,16 +7,21 @@ import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
+import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
+import java.io.File
 
 
 class Main : JavaPlugin() {
 
+    var items: YamlConfiguration = YamlConfiguration()
+
     override fun onEnable() {
         Bukkit.getPluginManager().registerEvents(Events(), this)
+        items = YamlConfiguration.loadConfiguration(File(dataFolder, "items.yml"))
     }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
@@ -28,50 +33,23 @@ class Main : JavaPlugin() {
                     try {
                         val level = ItemLevel.valueOf(args[1].toUpperCase())
 
-                        when (args[0].toLowerCase()) {
+                        if (args[0] in items.getKeys(false)) {
+                            val mat: String = items.getString(args[0] + ".material")!!.toUpperCase()
+                            val dispname = items.getString(args[0] + ".name")!!
+                            val attr = items.getString(args[0] + ".attribute")!!.toUpperCase()
+                            val slot = items.getString(args[0] + ".slot")!!.toUpperCase()
 
-                            "bots" -> {
-                                val itemStack = ItemStack(Material.LEATHER_BOOTS)
-                                itemStack.itemMeta = MagicMeta(
-                                    itemStack.itemMeta!!,
-                                    level,
-                                    "Boots of Travel",
-                                    Attribute.GENERIC_MOVEMENT_SPEED,
-                                    EquipmentSlot.FEET
+                            val itemStack = ItemStack(Material.valueOf(mat))
+                            itemStack.itemMeta = MagicMeta(
+                                itemStack.itemMeta!!,
+                                level,
+                                dispname,
+                                Attribute.valueOf(attr),
+                                EquipmentSlot.valueOf(slot)
+                            ).create()
 
-                                ).create()
-                                sender.inventory.addItem(itemStack)
-                            }
+                            sender.inventory.addItem(itemStack)
 
-                            "hot" -> {
-                                val itemStack = ItemStack(Material.SLIME_BALL)
-                                itemStack.itemMeta = MagicMeta(
-                                    itemStack.itemMeta!!,
-                                    level,
-                                    "Heart of Tarrasque",
-                                    Attribute.GENERIC_MAX_HEALTH,
-                                    EquipmentSlot.OFF_HAND
-
-                                ).create()
-                                sender.inventory.addItem(itemStack)
-                            }
-
-                            "hyperstone" -> {
-                                val itemStack = ItemStack(Material.EMERALD)
-                                itemStack.itemMeta = MagicMeta(
-                                    itemStack.itemMeta!!,
-                                    level,
-                                    "Hyperstone",
-                                    Attribute.GENERIC_ATTACK_SPEED,
-                                    EquipmentSlot.OFF_HAND
-
-                                ).create()
-                                sender.inventory.addItem(itemStack)
-                            }
-
-                            else -> {
-                                sender.sendMessage("Unknown custom item")
-                            }
                         }
 
 

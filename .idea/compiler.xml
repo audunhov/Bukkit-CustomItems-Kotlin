@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="CustomItemsKotlinMaven" />
+        <module name="me-audunhov-customitemskt" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="CustomItemsKotlinMaven" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>

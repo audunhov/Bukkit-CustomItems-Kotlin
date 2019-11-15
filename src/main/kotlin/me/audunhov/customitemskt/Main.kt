@@ -48,6 +48,8 @@ class Main : JavaPlugin() {
                                 EquipmentSlot.valueOf(slot)
                             ).create()
 
+                            sender.inventory.addItem(itemStack)
+
                         }
 
 
